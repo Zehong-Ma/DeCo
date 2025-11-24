@@ -32,7 +32,7 @@
 <!-- [![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)](---) -->
 [![arXiv](https://img.shields.io/badge/Arxiv-2506.09045-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2506.09045) 
 [![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://zehong-ma.github.io/DeCo/) 
-[![Huggingface](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Online_Demo-green)](https://huggingface.co/spaces/zehongma/DeCo) 
+[![Huggingface](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Online_Demo-green)](https://14467288703cf06a3c.gradio.live) 
 [![github](https://img.shields.io/github/stars/Zehong-Ma/DeCo.svg?style=social)](https://github.com/Zehong-Ma/DeCo/)
 </h5>
 
@@ -86,10 +86,10 @@ We introduce a novel frequency-decoupled framework DeCo for pixel diffusion, whe
 |---------------|---------------|--------|------|------|----------------------------------------------------------|
 | Text-to-Image | DeCo-XXL/16| 1.1B | 0.86 | 81.4| [🤗](https://huggingface.co/zehongma/DeCo/blob/main/t2i_DeCo.ckpt) |
 ## 🔥 Online Demos
-![](./docs/static/images/demo.png)
+![](./docs/static/images/demo.jpg)
 We provide online demos for DeCo-XXL/16(text-to-image) on HuggingFace Spaces.
 
-HF spaces: [https://huggingface.co/spaces/zehongma/DeCo](https://huggingface.co/spaces/zehongma/DeCo)
+HF spaces: [https://14467288703cf06a3c.gradio.live](https://14467288703cf06a3c.gradio.live)
 
 To host the local gradio demo, run the following command:
 ```bash

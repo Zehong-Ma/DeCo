@@ -172,7 +172,7 @@ if __name__ == "__main__":
     pipeline = Pipeline(vae, denoiser, conditioner, args.resolution)
 
     with gr.Blocks() as demo:
-        gr.Markdown(f"config:{args.config}\n\n ckpt_path:{args.ckpt_path}")
+        # gr.Markdown(f"config:{args.config}\n\n ckpt_path:{args.ckpt_path}")
         with gr.Row():
             with gr.Column(scale=1):
                 num_steps = gr.Slider(minimum=1, maximum=100, step=1, label="num steps", value=25)
@@ -205,3 +205,4 @@ if __name__ == "__main__":
                       order
                   ], outputs=[output_sample, output_trajs])
     demo.launch(server_name="0.0.0.0", server_port=23231)
+    # demo.launch(share=True, server_name="0.0.0.0", server_port=23231)
