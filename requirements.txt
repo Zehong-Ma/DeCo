@@ -1,0 +1,13 @@
+lightning
+omegaconf==2.3.0
+torch==2.7.1
+diffusers
+transformers
+jsonargparse[signatures]>=4.27.7
+torchvision
+timm
+accelerate
+gradio
+wandb
+webdataset
+tensorboard

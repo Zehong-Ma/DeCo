@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<meta property='og:title' content="DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation"/>
+<meta property='og:description' content="DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation"/>
+<meta property='og:url' content='https://Zehong-Ma.github.io/DeCo/'/>
+<meta property='og:image:width' content='1200' />
+<meta property='og:image:height' content='663' />
+<!-- TYPE BELOW IS PROBABLY: 'website' or 'article' or look on https://ogp.me/#types -->
+<meta property="og:type" content='website'/>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation">
+  <meta name="keywords" content="DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation</title>
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/tab_gallery.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+  <link rel="stylesheet" href="juxtapose/css/juxtapose.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/magnifier.js"></script>
+  <link href="https://fonts.cdnfonts.com/css/menlo" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/image_card_fader.css">
+  <link rel="stylesheet" href="./static/css/image_card_slider.css">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Patrick+Hand|Google+Sans|Noto+Sans|Castoro|Lato|Open+Sans&effect=shadow-multiple|emboss|3d"> 
+  <link rel="icon" href="./static/images/clock.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./static/images/clock.png" type="image/x-icon">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<style>
+  @import url('https://fonts.cdnfonts.com/css/menlo');
+
+  .video-table td, .video-table th {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-weight: normal;
+  }
+  .first-col {
+    width: 7%;
+    vertical-align: middle;
+  }
+  .other-col {
+    width: 31%;
+  }
+  body {
+    font-family: "Lato", sans-serif;
+    font-size: 1.1em;
+  }
+  .title.is-3 {
+    font-weight: 900;
+    font-size: 2.0rem;
+  }
+  .title.is-4 {
+    font-weight: 700;
+    font-size: 1.7rem;
+  }
+  .custom-emoji {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    background-image: url('./static/images/clock.png');
+    background-size: cover;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+</style>
+
+
+<body>
+
+  <section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <br><br>
+          <h1 class="title is-2 publication-title" style="font-size: 2.12rem">
+            DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation
+          </h1>
+        
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://zehong-ma.github.io/" target="_blank">Zehong Ma</a><sup>1,3</sup><sup>†</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://joinwei-pku.github.io/longhuiwei.github.io/" target="_blank">Longhui Wei</a><sup>3</sup><sup>*</sup><sup>‡</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=us4prRUAAAAJ&hl=zh-CN" target="_blank">Shuai Wang</a><sup>2</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://www.pkuvmc.com/" target="_blank">Shiliang Zhang</a><sup>1</sup><sup>*</sup>,&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://www.qitian1987.com/" target="_blank">Qi Tian</a><sup>3</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>State Key Laboratory of Multimedia Information Processing, School of Computer Science,&nbsp;</span>
+            <span class="author-block">Peking University&nbsp;</span>
+            <span class="author-block"><sup>2</sup>Nanjing University</span>
+            <span class="author-block"><sup>3</sup>Huawei Inc.</span>
+          </div>
+          
+
+          <div class="is-size-5 publication-authors">
+            († Work was done during internship at Huawei, ‡ Project Leader, * Corresponding author.)
+          </div>
+
+          <!-- <div class="is-size-5 publication-venue">
+            in XXX
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Zehong-Ma/DeCo" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- paper -->
+              <span class="link-block">
+                <a href="https://openreview.net/pdf?id=KZn7TDOL4J" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- bibtex -->
+              <span class="link-block">
+                <a href="#bibtex"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-obp"></i>
+                  </span>
+                  <span>BibTex</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <!-- Teaser video-->
+  <section class="hero teaser">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="content has-text-centered">
+          <img src="./static/images/t2i_visualization.jpg" style="width: 100%;"><br>
+          <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 1: Visualization of images generated by our DeCo. All images are at a 512x512 resolution. </span>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+  </section>
+  <!-- End teaser video -->
+
+  <!-- Paper abstract -->
+  <section class="section hero is-light">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <!-- <div class="columns is-centered has-text-centered"> -->
+        <!-- <div class="column is-four-fifths"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <!-- <h2 class="title is-3">Abstract</h2> -->
+        <div class="content has-text-justified">
+          <p>
+            Pixel diffusion aims to generate images directly in pixel space in an end-to-end fashion. This approach avoids the limitations of VAE in the two-stage latent diffusion, offering higher model capacity. Existing pixel diffusion models suffer from slow training and inference, as they usually model both high-frequency signals and low-frequency semantics within a single diffusion transformer (DiT). To pursue a more efficient pixel diffusion paradigm, we propose the frequency-<b><span style="color: blue;">DeCo</span></b>upled pixel diffusion framework. With the intuition to decouple the generation of high and low frequency components, we leverage a lightweight pixel decoder to generate high-frequency details conditioned on semantic guidance from the DiT. This thus frees the DiT to specialize in modeling low-frequency semantics. In addition, we introduce a frequency-aware flow-matching loss that emphasizes visually salient frequencies while suppressing insignificant ones. Extensive experiments show that DeCo achieves superior performance among pixel diffusion models, attaining FID of 1.62 (256×256) and 2.22 (512×512) on ImageNet, closing the gap with latent diffusion methods. Furthermore, our pretrained text-to-image model achieves a leading overall score of 0.86 on GenEval in system-level comparison.
+          </p>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+  <!-- End paper abstract -->
+
+
+  
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Frequency-Decoupled Pixel Diffusion (DeCo)</h2>
+        
+        <h2 class="title is-4">Motivation</h2>
+        <div class="content has-text-justified">
+          <p>
+            Pixel diffusion aims to generate images directly in pixel space in an end-to-end fashion. This approach avoids the limitations of VAE in the two-stage latent diffusion, enabling more optimal distribution learning and eliminates artifacts from imperfect VAE compression.
+            However, it is challenging for pixel diffusion to jointly model complex high-frequency signals and low-frequency semantics within the high-dimensional pixel space. As illustrated in Fig.2 (a),  <b><span style="color: blue;">traditional methods typically rely on a single diffusion transformer (DiT) to learn these two components from a single-scale input for each timestep. The complex high-frequency signals, particularly high-frequency noise, could be hard to learn. They could also distract the DiT from learning low-frequency semantics. As illustrated in Fig.2 (c), this paradigm leads to noisy DiT outputs and degraded image quality.</span></b> 
+            We thus propose DeCo to decouple the generation of high and low frequency components. 
+          </p>
+          
+          <div class="content">
+            <img src="./static/images/intro.jpg" style="width: 100%;"><br>
+            <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 2: Illustration of our frequency-decoupled (DeCo) framework. In (a), traditional baseline models rely on a single DiT to jointly model both low-frequency semantics and high-frequency signals. (b) shows our DeCo framework, where a lightweight pixel decoder focuses on the high-frequency reconstruction, and the DiT models low-frequency semantics. As shown in (c), decoupling DiT from modeling high-frequency signals leads to better low-frequency semantic features in DiT Output, and higher image quality.</span>
+          </div>
+        </div>
+
+        <h2 class="title is-4">Implementation</h2>
+        <div class="content has-text-justified">
+          <p>
+            As illustrated in Fig.2 (b), DeCo utilizes the DiT to specialize in low-frequency semantic modeling with downsampled inputs. Semantic cues are hence incorporated with a lightweight pixel decoder to reconstruct high-frequency signals. In other words, the pixel decoder takes the low-frequency semantics from DiT as condition and predicts pixel velocities with a high-resolution input. <b><span style="color: blue;">In our DeCo, a lightweight pixel decoder is proposed to model high-frequency signals, freeing the DiT to specialize in low-frequency semantic modeling</span></b> To further emphasize visually salient frequencies and suppress perceptually insignificant high-frequency components, we introduce a frequency-aware Flow-Matching (FM) loss inspired by the JPEG. The detaild implementation is depicted in Fig.3.
+          </p>
+          <div class="content">
+            <img src="./static/images/architecture.jpg"  style="width: 100%;"><br>
+            <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 3: Overview of the proposed frequency-decoupled (DeCo) framework. The DiT operates on downsampled inputs to model low-frequency semantics, while the lightweight pixel decoder generates high-frequency details under the DiT's semantic guidance.</span>
+          </div>
+        </div>
+
+        <h2 class="title is-4">Empirically Analysis</h2>
+        <div class="content has-text-justified">
+          <p>
+            DCT spectral analysis in Fig. 4 (a) confirms that DeCo effectively shifts high-frequency components from the DiT to the pixel decoder, significantly reducing high-frequency energy in DiT outputs while maintaining strong high-frequency signals in the pixel velocity. This successful decoupling firstly benefits from the multi-scale input strategy, which allows the DiT to focus on low-frequency semantics from low-resolution inputs while the pixel decoder handles high-frequency details from high-resolution inputs. Furthermore, the AdaLN-based interaction proves to be a superior mechanism for modulating the pixel decoder with stable semantic conditions from the DiT, acting more effectively than simple methods like upsampling and addition.
+          </p>
+          <div class="content">
+            <img src="./static/images/dct_and_FID_comparison.jpg"  style="width: 95%;"><br>
+            <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 4: (a) DCT energy distribution of DiT outputs and predicted pixel velocities. Compared with baseline, DeCo suppresses high-frequency signals in DiT outputs while preserving strong high-frequency energy in pixel velocity, confirming effective frequency decoupling. The distribution is computed on 10K images across all diffusion steps using DCT transform with 8x8 block size. (b) FID comparison between our DeCo and baseline. DeCo reaches 2.57 FID in 400k iterations, 10× faster than the baseline.
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Evaluations</h2>
+        
+        <h2 class="title is-4">Quantitative Results</h2>
+        <div class="content has-text-centered">
+          <img src="./static/images/ablation_result.jpg.", style="width: 90%;">
+          <br>
+          <br>
+          <img src="./static/images/imagenet_results.jpg", style="width: 90%;">
+          <br>
+          <br>
+          <img src="./static/images/t2i_results.png", style="width: 90%;">
+        </div>
+
+        <h2 class="title is-4">Qualitative Results</h2>
+        <div class="content has-text-centered">
+          <img src="./static/images/appendix_t2i_figures.jpg.", style="width: 90%;">
+          <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 5: More Qualitative results of text-to-image generation at a 512x512 resolution. Our DeCo supports multiple languages with the Qwen3 text encoder, such as Chinese, Japanese, and English.
+          </span>
+          <br>
+          <br>
+          <img src="./static/images/c2i_imagenet256_appendix.jpg", style="width: 90%;">
+          <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 6: Qualitative results of class-to-image generation at a 256x256 resolution.
+          </span>
+          <br>
+          <br>
+          <img src="./static/images/c2i_imagenet512_appendix.jpg", style="width: 90%;">
+          <span style="font-size: 0.8em; width: 100%; display: inline-block;">Figure 7: Qualitative results of class-to-image generation at a 512x512 resolution.
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title"><a id="bibtex">BibTeX</a></h2>
+    <pre><code>@inproceedings{
+      ma2025magcache,
+      title={DeCo: Frequency-Decoupled Pixel Diffusion for End-to-End Image Generation},
+      author={Zehong Ma and Longhui Wei and Feng Wang and Shiliang Zhang and Qi Tian},
+      booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+      year={2025},
+      url={https://openreview.net/forum?id=KZn7TDOL4J}
+    }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website adapted from the following <a href="https://nerfies.github.io">source code</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="juxtapose/js/juxtapose.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>    
+
+</body>
+</html>
