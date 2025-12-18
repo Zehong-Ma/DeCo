@@ -18,7 +18,7 @@ trainer:
         save_dir: ./universal_pix_flow_t2i
         name: *exp
   num_sanity_val_steps: 2
-  max_steps: 360000
+  max_steps: 340000
   gradient_clip_val: 1.0
   gradient_clip_algorithm: norm
   val_check_interval: 40000
@@ -35,7 +35,7 @@ trainer:
         save_last: true
     - class_path: src.callbacks.save_images.SaveImagesHook
       init_args:
-         save_dir: val_200k
+         save_dir: val
   plugins:
     - src.plugins.bd_env.BDEnvironment
 model:
@@ -121,22 +121,22 @@ data:
         - 512
         - 512
   pred_dataset:
-    # class_path: src.data.dataset.geneval.GenEvalDataset
-    # init_args:
-    #   meta_json_path: ./evaluations/geneval/evaluation_metadata_rephrased.jsonl
-    #   num_samples_per_instance: 4
-    #   latent_shape:
-    #     - 3
-    #     - 512
-    #     - 512
-    class_path: src.data.dataset.dpg.DPGDataset
+    class_path: src.data.dataset.geneval.GenEvalDataset
     init_args:
-      prompt_path: ./evaluations/dpg/prompts
+      meta_json_path: ./evaluations/geneval/evaluation_metadata.jsonl
       num_samples_per_instance: 4
       latent_shape:
         - 3
         - 512
         - 512
+    # class_path: src.data.dataset.dpg.DPGDataset
+    # init_args:
+    #   prompt_path: ./evaluations/dpg/prompts
+    #   num_samples_per_instance: 4
+    #   latent_shape:
+    #     - 3
+    #     - 512
+    #     - 512
   train_batch_size: 16
   train_num_workers: 8
   pred_batch_size: 8
