@@ -1,0 +1,116 @@
+# lightning.pytorch==2.4.0
+seed_everything: true
+tags:
+  exp: &exp Baseline_repa_large
+huggingface_cache_dir: null
+trainer:
+  default_root_dir: ./universal_pix_workdirs
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: bf16-mixed
+  logger:
+      class_path: lightning.pytorch.loggers.TensorBoardLogger
+      init_args:
+        save_dir: ./universal_pix_flow
+        name: *exp
+  num_sanity_val_steps: 0
+  max_steps: 4000000
+  val_check_interval: 400000
+  check_val_every_n_epoch: null
+  log_every_n_steps: 50
+  deterministic: null
+  inference_mode: true
+  use_distributed_sampler: false
+  callbacks:
+    - class_path: src.callbacks.model_checkpoint.CheckpointHook
+      init_args:
+        every_n_train_steps: 400000
+        save_top_k: -1
+        save_last: true
+    - class_path: src.callbacks.save_images.SaveImagesHook
+      init_args:
+         save_dir: val_cfg3.2
+         save_compressed: true
+  plugins:
+    - src.plugins.bd_env.BDEnvironment
+model:
+  vae:
+    class_path: src.models.autoencoder.pixel.PixelAE
+    init_args:
+       scale: 1.0
+  denoiser:
+    class_path: src.models.transformer.dit_c2i_baseline.FlattenDiT
+    init_args:
+        in_channels: 3
+        patch_size: 16
+        num_groups: 16
+        hidden_size: &hidden_dim 1152
+        num_blocks: 28
+        num_classes: &num_classes 1000
+  conditioner:
+    class_path: src.models.conditioner.class_label.LabelConditioner
+    init_args:
+      num_classes: *num_classes
+  diffusion_trainer:
+    class_path: src.diffusion.flow_matching.training_repa.REPATrainer
+    init_args:
+      lognorm_t: true
+      encoder:
+        class_path: src.models.encoder.DINOv2
+        init_args:
+          weight_path: /root/.cache/torch/hub/checkpoints/dinov2_vitb14_pretrain.pth
+      align_layer: 8
+      proj_denoiser_dim: *hidden_dim
+      proj_hidden_dim: *hidden_dim
+      proj_encoder_dim: 768
+      scheduler: &scheduler src.diffusion.flow_matching.scheduling.LinearScheduler
+  diffusion_sampler:
+    class_path: src.diffusion.flow_matching.sampling.EulerSampler
+    init_args:
+      num_steps: 100
+      guidance: 3.2
+      guidance_interval_min: 0.1
+      guidance_interval_max: 1.0
+      scheduler: *scheduler
+      w_scheduler: src.diffusion.flow_matching.scheduling.LinearScheduler
+      guidance_fn: src.diffusion.base.guidance.simple_guidance_fn
+      step_fn: src.diffusion.flow_matching.sampling.ode_step_fn
+  ema_tracker:
+    class_path: src.callbacks.simple_ema.SimpleEMA
+    init_args:
+      decay: 0.9999
+  optimizer:
+    class_path: torch.optim.AdamW
+    init_args:
+      lr: 1e-4
+      weight_decay: 0.0
+data:
+  train_dataset:
+    class_path: src.data.dataset.imagenet.PixImageNet
+    init_args:
+      root: /data/datasets/ImageNet-1K/train
+      resolution: 256
+  eval_dataset:
+    class_path: src.data.dataset.randn.ClassLabelRandomNDataset
+    init_args:
+      num_classes: 1000
+      max_num_instances: 50000
+      latent_shape:
+        - 3
+        - 256
+        - 256
+  pred_dataset:
+    class_path: src.data.dataset.randn.ClassLabelRandomNDataset
+    init_args:
+      num_classes: *num_classes
+      max_num_instances: 50000
+      latent_shape:
+        - 3
+        - 256
+        - 256
+  train_batch_size: 32
+  train_num_workers: 4
+  pred_batch_size: 32
+  pred_num_workers: 1
